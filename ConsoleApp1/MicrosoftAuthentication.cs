@@ -321,16 +321,18 @@ namespace ConsoleApp1
             var response = (HttpWebResponse)request.GetResponse();
             string jsonString = Request.ReadBody(response);
             Json.JSONData json = Json.ParseJson(jsonString);
+            response.Close();
             return json.Properties["items"].DataArray.Count > 0;
         }
 
         public UserProfile GetUserProfile(string accessToken)
         {
-            var request = Request.Create(ownership);
+            var request = Request.Create(profile);
             request.Headers.Add("Authorization", string.Format("Bearer {0}", accessToken));
             var response = (HttpWebResponse)request.GetResponse();
             string jsonString = Request.ReadBody(response);
             Json.JSONData json = Json.ParseJson(jsonString);
+            response.Close();
             return new UserProfile()
             {
                 UUID = json.Properties["id"].StringValue,
