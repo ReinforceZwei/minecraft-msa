@@ -39,6 +39,10 @@ namespace ConsoleApp1
                 Console.WriteLine("Minecraft User Name: {0}", profile.UserName);
                 Console.WriteLine("UUID: {0}", profile.UUID);
             }
+            else
+            {
+                Console.WriteLine("This user doesn't have Minecraft");
+            }
 
             Console.ReadLine();
         }

@@ -127,7 +127,7 @@ namespace ConsoleApp1
             }
             else
             {
-                throw new Exception("Redirection expected!");
+                throw new Exception("Unexpected response. Check your credentials");
             }
         }
 
@@ -196,6 +196,7 @@ namespace ConsoleApp1
             request.UserAgent = userAgent;
             request.ContentType = "application/json";
             request.Accept = "application/json";
+            request.Headers.Add("x-xbl-contract-version", "1");
 
             string payload = "{"
                 + "\"Properties\": {"
@@ -305,7 +306,10 @@ namespace ConsoleApp1
             var response = (HttpWebResponse)request.GetResponse();
 
             string jsonString = Request.ReadBody(response);
+            // See https://github.com/ORelio/Sharp-Tools/issues/1
+            jsonString = jsonString.Replace("[ ]", "[]");
             Json.JSONData json = Json.ParseJson(jsonString);
+            response.Close();
             return json.Properties["access_token"].StringValue;
         }
 
@@ -320,6 +324,8 @@ namespace ConsoleApp1
             request.Headers.Add("Authorization", string.Format("Bearer {0}", accessToken));
             var response = (HttpWebResponse)request.GetResponse();
             string jsonString = Request.ReadBody(response);
+            // See https://github.com/ORelio/Sharp-Tools/issues/1
+            jsonString = jsonString.Replace("[ ]", "[]");
             Json.JSONData json = Json.ParseJson(jsonString);
             response.Close();
             return json.Properties["items"].DataArray.Count > 0;
@@ -331,6 +337,8 @@ namespace ConsoleApp1
             request.Headers.Add("Authorization", string.Format("Bearer {0}", accessToken));
             var response = (HttpWebResponse)request.GetResponse();
             string jsonString = Request.ReadBody(response);
+            // See https://github.com/ORelio/Sharp-Tools/issues/1
+            jsonString = jsonString.Replace("[ ]", "[]");
             Json.JSONData json = Json.ParseJson(jsonString);
             response.Close();
             return new UserProfile()
