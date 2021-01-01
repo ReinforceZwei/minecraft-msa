@@ -73,10 +73,10 @@ namespace ConsoleApp1
             request.CookieContainer = new CookieContainer();
             request.CookieContainer.Add(preAuth.Cookie);
 
-            string postData = "login=" + Uri.EscapeDataString(email);
-            postData += "&loginfmt=" + Uri.EscapeDataString(email);
-            postData += "&passwd=" + Uri.EscapeDataString(password);
-            postData += "&PPFT=" + Uri.EscapeDataString(preAuth.PPFT);
+            string postData = "login=" + Uri.EscapeDataString(email)
+                 + "&loginfmt=" + Uri.EscapeDataString(email)
+                 + "&passwd=" + Uri.EscapeDataString(password)
+                 + "&PPFT=" + Uri.EscapeDataString(preAuth.PPFT);
             byte[] data = Encoding.UTF8.GetBytes(postData);
 
             request.ContentLength = data.Length;
@@ -241,7 +241,7 @@ namespace ConsoleApp1
                     {
                         throw new Exception("The account is a child (under 18) and cannot proceed unless the account is added to a Family by an adult");
                     }
-                    else throw new Exception("Unknown error code: " + json.Properties["XErr"].StringValue);
+                    else throw new Exception("Unknown XSTS error code: " + json.Properties["XErr"].StringValue);
                 }
                 else
                 {
